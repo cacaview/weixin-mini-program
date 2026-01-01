@@ -1,0 +1,91 @@
+<!--反馈页面-->
+<view class="container">
+  <view class="header">
+    <text class="title">📝 意见反馈</text>
+    <text class="subtitle">您的反馈将帮助我们不断改进</text>
+  </view>
+
+  <!-- 问题列表 -->
+  <view class="questions">
+    <view class="question-item" wx:for="{{questions}}" wx:key="id">
+      <text class="question-text">{{index + 1}}. {{item.question}}</text>
+      
+      <!-- 评分类型 -->
+      <view class="rating-input" wx:if="{{item.type === 'rating'}}">
+        <slider min="1" max="5" value="{{answers[item.id] || 3}}" 
+                show-value 
+                activeColor="#8B0000"
+                data-question-id="{{item.id}}"
+                bindchange="onRatingChange"/>
+        <view class="rating-labels">
+          <text>很差</text>
+          <text>一般</text>
+          <text>很好</text>
+        </view>
+      </view>
+
+      <!-- 选择类型 -->
+      <radio-group class="choice-input" wx:if="{{item.type === 'choice'}}" 
+                   data-question-id="{{item.id}}"
+                   bindchange="onChoiceChange">
+        <label class="choice-item" wx:for="{{item.options}}" wx:for-item="option" wx:key="*this">
+          <radio value="{{option}}" color="#8B0000"/>
+          <text>{{option}}</text>
+        </label>
+      </radio-group>
+
+      <!-- 文本类型 -->
+      <textarea class="text-input" wx:if="{{item.type === 'text'}}"
+                placeholder="请输入您的回答..."
+                value="{{answers[item.id]}}"
+                data-question-id="{{item.id}}"
+                bindinput="onTextInput"/>
+
+      <!-- 图片类型 -->
+      <view class="image-input" wx:if="{{item.type === 'image'}}">
+        <view class="image-list">
+          <view class="image-item" wx:for="{{images}}" wx:for-item="img" wx:for-index="imgIndex" wx:key="*this">
+            <image class="preview-image" src="{{img}}" mode="aspectFill"/>
+            <view class="remove-btn" data-index="{{imgIndex}}" bindtap="onRemoveImage">✕</view>
+          </view>
+          <view class="add-image" wx:if="{{images.length < 3}}" bindtap="onChooseImage">
+            <text class="add-icon">+</text>
+            <text class="add-text">添加图片</text>
+          </view>
+        </view>
+        <text class="image-tip" wx:if="{{supportImage}}">上传作品图片，AI将为您提供个性化反馈</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 查看学习报告 -->
+  <view class="report-entry" bindtap="onViewLearningReport">
+    <text class="report-icon">📊</text>
+    <text class="report-text">查看我的学习报告</text>
+    <text class="report-arrow">></text>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-section">
+    <button class="submit-btn" bindtap="onSubmit" loading="{{submitting}}">
+      {{submitting ? '提交中...' : '提交反馈'}}
+    </button>
+  </view>
+
+  <!-- 报告弹窗 -->
+  <view class="report-modal" wx:if="{{showReport}}">
+    <view class="modal-mask" bindtap="onCloseReport"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">分析报告</text>
+        <text class="modal-close" bindtap="onCloseReport">✕</text>
+      </view>
+      <scroll-view class="report-content" scroll-y>
+        <text>{{report}}</text>
+      </scroll-view>
+      <view class="modal-footer">
+        <button class="confirm-btn" bindtap="onCloseReport">知道了</button>
+      </view>
+    </view>
+  </view>
+</view>

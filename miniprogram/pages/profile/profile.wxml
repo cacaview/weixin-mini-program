@@ -1,0 +1,92 @@
+<!--个人中心页面-->
+<view class="container">
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <view class="user-bg"></view>
+    <view class="user-content">
+      <!-- 未登录状态 -->
+      <view class="login-prompt" wx:if="{{!isLoggedIn}}">
+        <view class="default-avatar">👤</view>
+        <text class="login-text">登录后体验更多功能</text>
+        <button class="login-btn" bindtap="onLogin">微信登录</button>
+      </view>
+      
+      <!-- 已登录状态 -->
+      <view class="user-info" wx:else>
+        <image class="user-avatar" src="{{userInfo.avatar}}" mode="aspectFill"/>
+        <view class="user-detail">
+          <text class="user-name">{{userInfo.name || userInfo.nickName}}</text>
+          <view class="user-level">
+            <text class="level-badge">Lv.{{userInfo.level}}</text>
+            <view class="exp-bar">
+              <view class="exp-progress" style="width: {{(userInfo.experience % 500) / 5}}%"></view>
+            </view>
+          </view>
+        </view>
+        <view class="edit-btn" bindtap="onEditProfile">编辑</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 数据统计 -->
+  <view class="stats-card" wx:if="{{isLoggedIn}}">
+    <view class="stat-item">
+      <text class="stat-value">{{stats.playedScripts}}</text>
+      <text class="stat-label">玩过的剧本</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-value">{{stats.createdScripts}}</text>
+      <text class="stat-label">创作的剧本</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-value">{{stats.heritageProgress}}</text>
+      <text class="stat-label">非遗学习</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-value">{{stats.badges}}</text>
+      <text class="stat-label">获得徽章</text>
+    </view>
+  </view>
+
+  <!-- 徽章展示 -->
+  <view class="badges-card" wx:if="{{isLoggedIn}}">
+    <view class="card-header">
+      <text class="card-title">🏆 我的徽章</text>
+    </view>
+    <view class="badges-list">
+      <view class="badge-item {{item.unlocked ? '' : 'locked'}}" wx:for="{{badges}}" wx:key="id">
+        <text class="badge-icon">{{item.icon}}</text>
+        <text class="badge-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-card">
+    <view class="menu-item" 
+          wx:for="{{menuItems}}" 
+          wx:key="title"
+          data-url="{{item.url}}"
+          bindtap="onMenuTap">
+      <text class="menu-icon">{{item.icon}}</text>
+      <view class="menu-content">
+        <text class="menu-title">{{item.title}}</text>
+        <text class="menu-desc">{{item.desc}}</text>
+      </view>
+      <text class="menu-arrow">></text>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-btn" wx:if="{{isLoggedIn}}" bindtap="onLogout">
+    退出登录
+  </view>
+
+  <!-- 版本信息 -->
+  <view class="version-info">
+    <text>红色剧本杀 v1.0.0</text>
+  </view>
+</view>

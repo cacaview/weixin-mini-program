@@ -1,0 +1,268 @@
+/* 个人中心页面样式 */
+
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 120rpx;
+}
+
+.user-card {
+  position: relative;
+  margin-bottom: 20rpx;
+}
+
+.user-bg {
+  height: 280rpx;
+  background: linear-gradient(135deg, #8B0000 0%, #B22222 100%);
+}
+
+.user-content {
+  position: relative;
+  margin-top: -100rpx;
+  padding: 0 30rpx;
+}
+
+.login-prompt {
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 50rpx 30rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.default-avatar {
+  width: 140rpx;
+  height: 140rpx;
+  background-color: #f5f5f5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60rpx;
+  margin: 0 auto 20rpx;
+}
+
+.login-text {
+  font-size: 28rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 30rpx;
+}
+
+.login-btn {
+  background-color: #8B0000;
+  color: #fff;
+  font-size: 30rpx;
+  padding: 20rpx 80rpx;
+  border-radius: 40rpx;
+}
+
+.user-info {
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.user-avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  border: 4rpx solid #fff;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.15);
+  margin-right: 24rpx;
+}
+
+.user-detail {
+  flex: 1;
+}
+
+.user-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.user-level {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.level-badge {
+  font-size: 22rpx;
+  color: #fff;
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.exp-bar {
+  flex: 1;
+  height: 12rpx;
+  background-color: #f0f0f0;
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.exp-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #FFD700 0%, #FFA500 100%);
+  border-radius: 6rpx;
+}
+
+.edit-btn {
+  font-size: 26rpx;
+  color: #8B0000;
+  padding: 12rpx 24rpx;
+  border: 1rpx solid #8B0000;
+  border-radius: 30rpx;
+}
+
+.stats-card {
+  display: flex;
+  background-color: #fff;
+  margin: 0 30rpx 20rpx;
+  border-radius: 16rpx;
+  padding: 30rpx 0;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.stat-item {
+  flex: 1;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #8B0000;
+  display: block;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 8rpx;
+  display: block;
+}
+
+.stat-divider {
+  width: 1rpx;
+  background-color: #eee;
+}
+
+.badges-card {
+  background-color: #fff;
+  margin: 0 30rpx 20rpx;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.card-header {
+  margin-bottom: 20rpx;
+}
+
+.card-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.badges-list {
+  display: flex;
+  gap: 24rpx;
+}
+
+.badge-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  background-color: #FFF8F0;
+  border-radius: 12rpx;
+}
+
+.badge-item.locked {
+  opacity: 0.4;
+  filter: grayscale(100%);
+}
+
+.badge-icon {
+  font-size: 40rpx;
+  margin-bottom: 8rpx;
+}
+
+.badge-name {
+  font-size: 22rpx;
+  color: #666;
+}
+
+.menu-card {
+  background-color: #fff;
+  margin: 0 30rpx 20rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 24rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-icon {
+  font-size: 40rpx;
+  margin-right: 20rpx;
+}
+
+.menu-content {
+  flex: 1;
+}
+
+.menu-title {
+  font-size: 30rpx;
+  color: #333;
+  display: block;
+}
+
+.menu-desc {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 4rpx;
+  display: block;
+}
+
+.menu-arrow {
+  font-size: 28rpx;
+  color: #ccc;
+}
+
+.logout-btn {
+  margin: 40rpx 30rpx;
+  padding: 24rpx;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 16rpx;
+  font-size: 30rpx;
+  color: #ff4d4f;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.version-info {
+  text-align: center;
+  padding: 30rpx;
+  font-size: 24rpx;
+  color: #ccc;
+}
