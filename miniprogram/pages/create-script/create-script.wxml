@@ -1,0 +1,166 @@
+<!--剧本创作页面-->
+<view class="container">
+  <!-- 步骤指示器 -->
+  <view class="steps">
+    <view class="step {{step >= 1 ? 'active' : ''}}">
+      <view class="step-num">1</view>
+      <text class="step-text">基本信息</text>
+    </view>
+    <view class="step-line {{step >= 2 ? 'active' : ''}}"></view>
+    <view class="step {{step >= 2 ? 'active' : ''}}">
+      <view class="step-num">2</view>
+      <text class="step-text">AI生成</text>
+    </view>
+    <view class="step-line {{step >= 3 ? 'active' : ''}}"></view>
+    <view class="step {{step >= 3 ? 'active' : ''}}">
+      <view class="step-num">3</view>
+      <text class="step-text">编辑完善</text>
+    </view>
+  </view>
+
+  <!-- 步骤1：基本信息 -->
+  <view class="step-content" wx:if="{{step === 1}}">
+    <view class="form-group">
+      <text class="form-label">剧本名称</text>
+      <input class="form-input" placeholder="请输入剧本名称" value="{{title}}" bindinput="onTitleInput"/>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">封面图片</text>
+      <view class="cover-upload" bindtap="onChooseCover">
+        <image wx:if="{{coverImage}}" class="cover-preview" src="{{coverImage}}" mode="aspectFill"/>
+        <view wx:else class="upload-placeholder">
+          <text class="upload-icon">📷</text>
+          <text class="upload-text">点击上传封面</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">主题</text>
+      <picker mode="selector" range="{{themeOptions}}" value="{{selectedThemeIndex}}" bindchange="onThemeChange">
+        <view class="form-picker">
+          <text>{{themeOptions[selectedThemeIndex] || '请选择主题'}}</text>
+          <text class="picker-arrow">▼</text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">非遗元素（最多3个）</text>
+      <view class="heritage-options">
+        <view class="heritage-option {{heritageElements.includes(item) ? 'selected' : ''}}" 
+              wx:for="{{heritageOptions}}" 
+              wx:key="*this"
+              data-element="{{item}}"
+              bindtap="onHeritageSelect">
+          {{item}}
+        </view>
+      </view>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">玩家人数：{{playerCount}}人</text>
+      <slider min="2" max="8" value="{{playerCount}}" bindchange="onPlayerCountChange" activeColor="#8B0000"/>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">难度</text>
+      <radio-group bindchange="onDifficultyChange">
+        <label class="radio-item">
+          <radio value="easy" checked="{{difficulty === 'easy'}}" color="#8B0000"/>简单
+        </label>
+        <label class="radio-item">
+          <radio value="medium" checked="{{difficulty === 'medium'}}" color="#8B0000"/>中等
+        </label>
+        <label class="radio-item">
+          <radio value="hard" checked="{{difficulty === 'hard'}}" color="#8B0000"/>困难
+        </label>
+      </radio-group>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">预计时长：{{duration}}分钟</text>
+      <slider min="60" max="240" step="30" value="{{duration}}" bindchange="onDurationChange" activeColor="#8B0000"/>
+    </view>
+  </view>
+
+  <!-- 步骤2：AI生成 -->
+  <view class="step-content" wx:if="{{step === 2}}">
+    <view class="generate-section">
+      <view class="generate-header">
+        <text class="generate-title">🤖 AI正在为您创作剧本大纲</text>
+        <text class="generate-subtitle">基于您选择的主题和非遗元素</text>
+      </view>
+
+      <view class="generate-info">
+        <view class="info-item">
+          <text class="info-label">主题：</text>
+          <text class="info-value">{{themeOptions[selectedThemeIndex]}}</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">非遗元素：</text>
+          <text class="info-value">{{heritageElements.join('、')}}</text>
+        </view>
+      </view>
+
+      <view class="outline-area">
+        <view class="loading-generate" wx:if="{{generating}}">
+          <view class="loading-spinner"></view>
+          <text>AI创作中，请稍候...</text>
+        </view>
+        <scroll-view class="outline-content" scroll-y wx:else>
+          <text>{{generatedOutline}}</text>
+        </scroll-view>
+      </view>
+
+      <view class="regenerate-btn" bindtap="generateOutline" wx:if="{{!generating && generatedOutline}}">
+        <text>🔄 重新生成</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 步骤3：编辑完善 -->
+  <view class="step-content" wx:if="{{step === 3}}">
+    <view class="form-group">
+      <text class="form-label">故事背景</text>
+      <textarea class="form-textarea" placeholder="请输入故事背景" value="{{description}}" bindinput="onDescriptionInput"/>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">角色列表</text>
+      <view class="role-list">
+        <view class="role-item" wx:for="{{roles}}" wx:key="id" data-index="{{index}}" bindtap="onEditRole">
+          <view class="role-avatar">{{item.name[0]}}</view>
+          <view class="role-info">
+            <text class="role-name">{{item.name}}</text>
+            <text class="role-desc">{{item.description}}</text>
+          </view>
+          <text class="edit-icon">✏️</text>
+        </view>
+      </view>
+      <view class="add-role-btn" bindtap="onAddRole">+ 添加角色</view>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">场景列表</text>
+      <view class="scene-list">
+        <view class="scene-item" wx:for="{{scenes}}" wx:key="id">
+          <text class="scene-icon">🏠</text>
+          <view class="scene-info">
+            <text class="scene-name">{{item.name}}</text>
+            <text class="scene-desc">{{item.description}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作 -->
+  <view class="bottom-actions">
+    <view class="action-btn secondary" wx:if="{{step > 1}}" bindtap="onPrevStep">上一步</view>
+    <view class="action-btn secondary" wx:if="{{step === 3}}" bindtap="onSaveDraft">保存草稿</view>
+    <view class="action-btn primary" wx:if="{{step < 3}}" bindtap="onNextStep">下一步</view>
+    <view class="action-btn primary" wx:if="{{step === 3}}" bindtap="onSubmit">发布剧本</view>
+  </view>
+</view>

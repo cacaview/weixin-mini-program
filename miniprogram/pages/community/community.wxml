@@ -1,0 +1,98 @@
+<!--社区页面-->
+<view class="container">
+  <!-- 标签栏 -->
+  <view class="tab-bar">
+    <view class="tab-item {{currentTab === item.key ? 'active' : ''}}" 
+          wx:for="{{tabs}}" 
+          wx:key="key"
+          data-tab="{{item.key}}"
+          bindtap="onTabChange">
+      {{item.label}}
+    </view>
+  </view>
+
+  <!-- 帖子列表 -->
+  <view class="post-list">
+    <view class="post-card" 
+          wx:for="{{posts}}" 
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="onPostTap">
+      <!-- 作者信息 -->
+      <view class="post-header">
+        <image class="author-avatar" src="{{item.author.avatar}}" mode="aspectFill"/>
+        <view class="author-info">
+          <text class="author-name">{{item.author.name}}</text>
+          <text class="post-time">{{item.createdAt}}</text>
+        </view>
+        <view class="post-type {{item.type}}">
+          {{item.type === 'script' ? '剧本' : item.type === 'discussion' ? '讨论' : '展示'}}
+        </view>
+      </view>
+
+      <!-- 帖子内容 -->
+      <view class="post-content">
+        <text class="post-title">{{item.title}}</text>
+        <text class="post-text">{{item.content}}</text>
+        
+        <!-- 图片展示 -->
+        <view class="post-images" wx:if="{{item.images.length > 0}}">
+          <image class="post-image {{item.images.length === 1 ? 'single' : ''}}" 
+                 wx:for="{{item.images}}" 
+                 wx:for-item="img"
+                 wx:key="*this"
+                 src="{{img}}" 
+                 mode="aspectFill"
+                 data-urls="{{item.images}}"
+                 data-current="{{img}}"
+                 catchtap="onPreviewImage"/>
+        </view>
+
+        <!-- 标签 -->
+        <view class="post-tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</text>
+        </view>
+      </view>
+
+      <!-- 互动栏 -->
+      <view class="post-footer">
+        <view class="action-item {{item.isLiked ? 'liked' : ''}}" 
+              data-id="{{item.id}}"
+              data-index="{{index}}"
+              catchtap="onLikeTap">
+          <text class="action-icon">{{item.isLiked ? '❤️' : '🤍'}}</text>
+          <text class="action-count">{{item.likes}}</text>
+        </view>
+        <view class="action-item">
+          <text class="action-icon">💬</text>
+          <text class="action-count">{{item.comments}}</text>
+        </view>
+        <view class="action-item">
+          <text class="action-icon">↗️</text>
+          <text class="action-text">分享</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="load-more" wx:if="{{posts.length > 0}}">
+    <view wx:if="{{loading}}" class="loading">
+      <view class="loading-spinner"></view>
+      <text>加载中...</text>
+    </view>
+    <text wx:elif="{{!hasMore}}" class="no-more">没有更多了</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && posts.length === 0}}">
+    <text class="empty-icon">📝</text>
+    <text class="empty-text">暂无帖子</text>
+    <button class="empty-btn" bindtap="onCreatePost">发布第一篇</button>
+  </view>
+
+  <!-- 发布按钮 -->
+  <view class="fab-btn" bindtap="onCreatePost">
+    <text>✏️</text>
+  </view>
+</view>
