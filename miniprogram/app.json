@@ -1,22 +1,53 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/script-library/script-library",
+    "pages/script-detail/script-detail",
+    "pages/game-room/game-room",
+    "pages/npc-chat/npc-chat",
+    "pages/community/community",
+    "pages/create-script/create-script",
+    "pages/heritage/heritage",
+    "pages/heritage-detail/heritage-detail",
+    "pages/profile/profile",
+    "pages/feedback/feedback",
     "pages/logs/logs"
   ],
   "window": {
-    "navigationBarTextStyle": "black",
-    "navigationStyle": "custom"
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#8B0000",
+    "navigationBarTitleText": "红色剧本杀",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#8B0000",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/script-library/script-library",
+        "text": "剧本库"
+      },
+      {
+        "pagePath": "pages/community/community",
+        "text": "社区"
+      },
+      {
+        "pagePath": "pages/heritage/heritage",
+        "text": "非遗"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
   },
   "style": "v2",
-  "rendererOptions": {
-    "skyline": {
-      "defaultDisplayBlock": true,
-      "disableABTest": true,
-      "sdkVersionBegin": "3.0.0",
-      "sdkVersionEnd": "15.255.255"
-    }
-  },
-  "componentFramework": "glass-easel",
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents"
 }
