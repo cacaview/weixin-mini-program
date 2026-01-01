@@ -1,0 +1,6 @@
+{
+  "usingComponents": {},
+  "navigationBarTitleText": "剧本库",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 100
+}

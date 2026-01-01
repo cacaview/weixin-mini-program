@@ -1,28 +1,151 @@
-<!--index.wxml-->
-<navigation-bar title="Weixin" back="{{false}}" color="black" background="#FFF"></navigation-bar>
-<scroll-view class="scrollarea" scroll-y type="list">
-  <view class="container">
-    <view class="userinfo">
-      <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
-        <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
-          <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
-        </button>
-        <view class="nickname-wrapper">
-          <text class="nickname-label">昵称</text>
-          <input type="nickname" class="nickname-input" placeholder="请输入昵称" bind:change="onInputChange" />
-        </view>
-      </block>
-      <block wx:elif="{{!hasUserInfo}}">
-        <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 获取头像昵称 </button>
-        <view wx:else> 请使用2.10.4及以上版本基础库 </view>
-      </block>
-      <block wx:else>
-        <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-      </block>
-    </view>
-    <view class="usermotto">
-      <text class="user-motto">{{motto}}</text>
+<!--首页-->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar" bindtap="onSearch">
+    <view class="search-input">
+      <text class="search-icon">🔍</text>
+      <text class="search-placeholder">搜索剧本、非遗项目...</text>
     </view>
   </view>
-</scroll-view>
+
+  <!-- 轮播图 -->
+  <swiper class="banner-swiper" 
+          indicator-dots="{{true}}" 
+          autoplay="{{true}}" 
+          interval="{{4000}}" 
+          circular="{{true}}"
+          indicator-color="rgba(255,255,255,0.5)"
+          indicator-active-color="#ffffff">
+    <swiper-item wx:for="{{banners}}" wx:key="id">
+      <view class="banner-item" 
+            data-link="{{item.link}}" 
+            bindtap="onBannerTap">
+        <image class="banner-image" 
+               src="{{item.imageUrl}}" 
+               mode="aspectFill"/>
+        <view class="banner-title">{{item.title}}</view>
+      </view>
+    </swiper-item>
+  </swiper>
+
+  <!-- 快捷入口 -->
+  <view class="quick-actions">
+    <view class="action-item" bindtap="onQuickStart">
+      <view class="action-icon">🎮</view>
+      <text class="action-text">快速开始</text>
+    </view>
+    <view class="action-item" bindtap="onCreateScript">
+      <view class="action-icon">✏️</view>
+      <text class="action-text">创作剧本</text>
+    </view>
+    <view class="action-item" bindtap="onMoreHeritage">
+      <view class="action-icon">🏺</view>
+      <text class="action-text">非遗学习</text>
+    </view>
+    <view class="action-item" bindtap="onMoreScripts">
+      <view class="action-icon">📚</view>
+      <text class="action-text">剧本库</text>
+    </view>
+  </view>
+
+  <!-- 推荐剧本 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">🔥 推荐剧本</text>
+      <text class="section-more" bindtap="onMoreScripts">更多 ></text>
+    </view>
+    <scroll-view class="script-scroll" scroll-x="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}">
+      <view class="script-list">
+        <view class="script-card" 
+              wx:for="{{recommendedScripts}}" 
+              wx:key="id"
+              data-id="{{item.id}}"
+              bindtap="onScriptTap">
+          <image class="script-cover" src="{{item.cover}}" mode="aspectFill"/>
+          <view class="script-info">
+            <text class="script-title">{{item.title}}</text>
+            <view class="script-tags">
+              <text class="tag theme-tag">{{item.theme}}</text>
+              <text class="tag heritage-tag" wx:for="{{item.heritageElements}}" wx:for-item="heritage" wx:key="*this">{{heritage}}</text>
+            </view>
+            <view class="script-meta">
+              <text class="meta-item">{{item.playerCount.min}}-{{item.playerCount.max}}人</text>
+              <text class="meta-item">{{item.duration}}分钟</text>
+              <text class="meta-item rating">⭐{{item.rating}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 热门剧本 -->
+  <view class="section" wx:if="{{hotScripts.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">🎭 热门剧本</text>
+      <text class="section-more" bindtap="onMoreScripts">更多 ></text>
+    </view>
+    <view class="hot-script-grid">
+      <view class="hot-script-item" 
+            wx:for="{{hotScripts}}" 
+            wx:key="id"
+            data-id="{{item.id}}"
+            bindtap="onScriptTap">
+        <image class="hot-script-cover" src="{{item.cover}}" mode="aspectFill"/>
+        <view class="hot-script-info">
+          <text class="hot-script-title">{{item.title}}</text>
+          <text class="hot-script-play">{{item.playCount}}人玩过</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 非遗精选 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">🏺 非遗精选</text>
+      <text class="section-more" bindtap="onMoreHeritage">更多 ></text>
+    </view>
+    <view class="heritage-grid">
+      <view class="heritage-card" 
+            wx:for="{{featuredHeritage}}" 
+            wx:key="id"
+            data-id="{{item.id}}"
+            bindtap="onHeritageTap">
+        <image class="heritage-cover" src="{{item.cover}}" mode="aspectFill"/>
+        <view class="heritage-info">
+          <text class="heritage-name">{{item.name}}</text>
+          <text class="heritage-category">{{item.category}}</text>
+          <text class="heritage-location">📍 {{item.location.province}} {{item.location.city}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 红色文化专区 -->
+  <view class="section red-culture-section">
+    <view class="section-header">
+      <text class="section-title">🚩 红色文化专区</text>
+    </view>
+    <view class="red-culture-banner">
+      <view class="red-culture-content">
+        <text class="red-culture-title">传承红色基因</text>
+        <text class="red-culture-subtitle">在剧本杀中重温革命历史</text>
+        <view class="red-culture-btn" bindtap="onMoreScripts">
+          <text>探索更多</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部留白 -->
+  <view class="bottom-space"></view>
+</view>
+
+<!-- 加载中 -->
+<view class="loading-mask" wx:if="{{loading}}">
+  <view class="loading-content">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+</view>

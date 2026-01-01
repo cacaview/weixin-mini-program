@@ -1,0 +1,125 @@
+<!--剧本详情页面-->
+<view class="container" wx:if="{{script}}">
+  <!-- 封面区域 -->
+  <view class="cover-section">
+    <image class="cover-image" src="{{script.cover}}" mode="aspectFill"/>
+    <view class="cover-overlay">
+      <view class="script-title">{{script.title}}</view>
+      <view class="script-meta">
+        <text class="meta-item">⭐ {{script.rating}}</text>
+        <text class="meta-item">🎮 {{script.playCount}}人玩过</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="info-card">
+    <view class="info-row">
+      <view class="info-item">
+        <text class="info-label">主题</text>
+        <text class="info-value theme">{{script.theme}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">难度</text>
+        <text class="info-value difficulty-{{script.difficulty}}">
+          {{script.difficulty === 'easy' ? '简单' : script.difficulty === 'medium' ? '中等' : '困难'}}
+        </text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">人数</text>
+        <text class="info-value">{{script.playerCount.min}}-{{script.playerCount.max}}人</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">时长</text>
+        <text class="info-value">{{script.duration}}分钟</text>
+      </view>
+    </view>
+    <view class="heritage-tags">
+      <text class="heritage-label">非遗元素：</text>
+      <text class="heritage-tag" wx:for="{{script.heritageElements}}" wx:key="*this">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 标签页 -->
+  <view class="tabs">
+    <view class="tab-item {{activeTab === 'intro' ? 'active' : ''}}" data-tab="intro" bindtap="onTabChange">剧本简介</view>
+    <view class="tab-item {{activeTab === 'roles' ? 'active' : ''}}" data-tab="roles" bindtap="onTabChange">角色介绍</view>
+    <view class="tab-item {{activeTab === 'scenes' ? 'active' : ''}}" data-tab="scenes" bindtap="onTabChange">场景预览</view>
+  </view>
+
+  <!-- 内容区域 -->
+  <view class="content-section">
+    <!-- 剧本简介 -->
+    <view class="tab-content" wx:if="{{activeTab === 'intro'}}">
+      <view class="section-title">📖 故事背景</view>
+      <text class="description">{{script.description}}</text>
+      
+      <view class="section-title">👤 作者信息</view>
+      <view class="author-info">
+        <image class="author-avatar" src="{{script.author.avatar}}" mode="aspectFill"/>
+        <text class="author-name">{{script.author.name}}</text>
+      </view>
+    </view>
+
+    <!-- 角色介绍 -->
+    <view class="tab-content" wx:if="{{activeTab === 'roles'}}">
+      <view class="role-list">
+        <view class="role-card" wx:for="{{script.roles}}" wx:key="id">
+          <view class="role-header">
+            <view class="role-avatar">{{item.name[0]}}</view>
+            <view class="role-basic">
+              <text class="role-name">{{item.name}}</text>
+              <text class="role-title">{{item.description}}</text>
+            </view>
+          </view>
+          <text class="role-background">{{item.background}}</text>
+          <view class="role-skills">
+            <text class="skill-tag" wx:for="{{item.skills}}" wx:for-item="skill" wx:key="*this">{{skill}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 场景预览 -->
+    <view class="tab-content" wx:if="{{activeTab === 'scenes'}}">
+      <view class="scene-list">
+        <view class="scene-card" wx:for="{{script.scenes}}" wx:key="id">
+          <view class="scene-icon">🏠</view>
+          <view class="scene-info">
+            <text class="scene-name">{{item.name}}</text>
+            <text class="scene-desc">{{item.description}}</text>
+            <view class="scene-npcs" wx:if="{{item.npcs.length > 0}}">
+              <text>NPC：{{item.npcs.join('、')}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="action-btn collect {{isCollected ? 'active' : ''}}" bindtap="onCollect">
+      <text class="btn-icon">{{isCollected ? '❤️' : '🤍'}}</text>
+      <text>收藏</text>
+    </view>
+    <view class="action-btn share">
+      <button class="share-btn" open-type="share">
+        <text class="btn-icon">↗️</text>
+        <text>分享</text>
+      </button>
+    </view>
+    <view class="action-btn join" bindtap="onJoinRoom">
+      <text>加入房间</text>
+    </view>
+    <view class="action-btn create" bindtap="onCreateRoom">
+      <text>创建房间</text>
+    </view>
+  </view>
+</view>
+
+<!-- 加载中 -->
+<view class="loading-container" wx:if="{{loading}}">
+  <view class="loading-spinner"></view>
+  <text>加载中...</text>
+</view>
