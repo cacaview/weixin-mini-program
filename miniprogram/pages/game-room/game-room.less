@@ -1,0 +1,459 @@
+/* 游戏房间页面样式 */
+
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 140rpx;
+}
+
+.room-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  background: linear-gradient(135deg, #8B0000 0%, #B22222 100%);
+  color: #fff;
+}
+
+.room-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.room-id {
+  font-size: 24rpx;
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.copy-btn {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+}
+
+.share-btn {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 26rpx;
+  padding: 16rpx 32rpx;
+  border-radius: 30rpx;
+}
+
+.players-section {
+  padding: 30rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.players-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20rpx;
+}
+
+.player-slot {
+  aspect-ratio: 1;
+}
+
+.player-card {
+  height: 100%;
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+  border: 2rpx solid transparent;
+}
+
+.player-card.ready {
+  border-color: #52c41a;
+}
+
+.player-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-bottom: 12rpx;
+}
+
+.player-name {
+  font-size: 26rpx;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.player-role {
+  font-size: 22rpx;
+  color: #8B0000;
+  margin-top: 4rpx;
+}
+
+.player-status {
+  margin-top: 8rpx;
+}
+
+.host-badge {
+  font-size: 20rpx;
+  color: #fff;
+  background-color: #FFD700;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+}
+
+.ready-badge {
+  font-size: 20rpx;
+  color: #fff;
+  background-color: #52c41a;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+}
+
+.waiting-badge {
+  font-size: 20rpx;
+  color: #999;
+  background-color: #f0f0f0;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+}
+
+.empty-slot {
+  height: 100%;
+  background-color: #fff;
+  border-radius: 16rpx;
+  border: 2rpx dashed #ddd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-icon {
+  font-size: 48rpx;
+  color: #ddd;
+}
+
+.empty-text {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+.role-section {
+  padding: 0 30rpx 30rpx;
+}
+
+.selected-role {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.role-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.change-btn {
+  font-size: 26rpx;
+  color: #8B0000;
+}
+
+.select-hint {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.bottom-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 20rpx;
+  padding: 20rpx 30rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background-color: #fff;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.action-btn {
+  flex: 1;
+  padding: 24rpx;
+  text-align: center;
+  border-radius: 40rpx;
+  font-size: 30rpx;
+}
+
+.action-btn.leave {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.action-btn.start {
+  background: linear-gradient(135deg, #8B0000 0%, #B22222 100%);
+  color: #fff;
+}
+
+.action-btn.start.disabled {
+  opacity: 0.5;
+}
+
+.action-btn.ready {
+  background: linear-gradient(135deg, #52c41a 0%, #73d13d 100%);
+  color: #fff;
+}
+
+.action-btn.ready.cancel {
+  background: #f5f5f5;
+  color: #666;
+}
+
+/* 游戏进行中 */
+.scene-section {
+  margin: 30rpx;
+  background-color: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.scene-header {
+  padding: 24rpx;
+  background: linear-gradient(135deg, #8B0000 0%, #B22222 100%);
+}
+
+.scene-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+.scene-content {
+  padding: 24rpx;
+}
+
+.scene-desc {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.8;
+}
+
+.npc-list {
+  padding: 0 24rpx 24rpx;
+}
+
+.npc-title {
+  font-size: 26rpx;
+  color: #999;
+  margin-bottom: 16rpx;
+}
+
+.npc-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  background-color: #FAFAFA;
+  border-radius: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.npc-avatar {
+  width: 60rpx;
+  height: 60rpx;
+  background-color: #FFE4E1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  margin-right: 16rpx;
+}
+
+.npc-info {
+  flex: 1;
+}
+
+.npc-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+}
+
+.npc-role {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.talk-btn {
+  font-size: 26rpx;
+  color: #8B0000;
+  padding: 12rpx 24rpx;
+  background-color: #FFE4E1;
+  border-radius: 30rpx;
+}
+
+.game-actions {
+  padding: 30rpx;
+}
+
+.game-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  padding: 24rpx;
+  background-color: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+.action-icon {
+  font-size: 32rpx;
+}
+
+.clue-count {
+  position: absolute;
+  top: 16rpx;
+  right: 16rpx;
+  background-color: #ff4d4f;
+  color: #fff;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+}
+
+/* 角色选择弹窗 */
+.role-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+
+.modal-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-radius: 32rpx 32rpx 0 0;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal-close {
+  font-size: 32rpx;
+  color: #999;
+  padding: 10rpx;
+}
+
+.role-list {
+  padding: 20rpx 30rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+}
+
+.role-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  background-color: #FAFAFA;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  border: 2rpx solid transparent;
+}
+
+.role-item.selected {
+  border-color: #8B0000;
+  background-color: #FFF5F5;
+}
+
+.role-item.disabled {
+  opacity: 0.5;
+}
+
+.role-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  background: linear-gradient(135deg, #8B0000 0%, #B22222 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-right: 20rpx;
+}
+
+.role-info {
+  flex: 1;
+}
+
+.role-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+}
+
+.role-desc {
+  font-size: 26rpx;
+  color: #666;
+  margin-top: 4rpx;
+}
+
+.role-status {
+  font-size: 24rpx;
+  color: #999;
+}
