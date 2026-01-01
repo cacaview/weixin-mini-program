@@ -1,0 +1,94 @@
+<!--非遗详情页面-->
+<view class="container" wx:if="{{heritage}}">
+  <!-- 封面 -->
+  <view class="cover-section">
+    <swiper class="cover-swiper" indicator-dots="{{heritage.images.length > 1}}" circular>
+      <swiper-item>
+        <image class="cover-image" src="{{heritage.cover}}" mode="aspectFill" data-url="{{heritage.cover}}" bindtap="onPreviewImage"/>
+      </swiper-item>
+      <swiper-item wx:for="{{heritage.images}}" wx:key="*this">
+        <image class="cover-image" src="{{item}}" mode="aspectFill" data-url="{{item}}" bindtap="onPreviewImage"/>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="info-card">
+    <text class="heritage-name">{{heritage.name}}</text>
+    <view class="heritage-meta">
+      <text class="category-tag">{{heritage.category}}</text>
+      <text class="location" bindtap="onViewMap">📍 {{heritage.location.province}} {{heritage.location.city}}</text>
+    </view>
+  </view>
+
+  <!-- 标签页 -->
+  <view class="tabs">
+    <view class="tab-item {{activeTab === 'intro' ? 'active' : ''}}" data-tab="intro" bindtap="onTabChange">简介</view>
+    <view class="tab-item {{activeTab === 'tutorial' ? 'active' : ''}}" data-tab="tutorial" bindtap="onTabChange">学习教程</view>
+    <view class="tab-item {{activeTab === 'history' ? 'active' : ''}}" data-tab="history" bindtap="onTabChange">历史渊源</view>
+  </view>
+
+  <!-- 内容区域 -->
+  <view class="content-section">
+    <!-- 简介 -->
+    <view class="tab-content" wx:if="{{activeTab === 'intro'}}">
+      <view class="section">
+        <text class="section-title">📖 项目简介</text>
+        <text class="section-text">{{heritage.description}}</text>
+      </view>
+      <view class="section">
+        <text class="section-title">🎨 主要技法</text>
+        <view class="technique-list">
+          <text class="technique-tag" wx:for="{{heritage.techniques}}" wx:key="*this">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 学习教程 -->
+    <view class="tab-content" wx:if="{{activeTab === 'tutorial'}}">
+      <view class="tutorial-list">
+        <view class="tutorial-card" wx:for="{{tutorials}}" wx:key="id" data-id="{{item.id}}" bindtap="onTutorialTap">
+          <view class="tutorial-icon">📚</view>
+          <view class="tutorial-info">
+            <text class="tutorial-title">{{item.title}}</text>
+            <view class="tutorial-meta">
+              <text class="level-tag {{item.level}}">
+                {{item.level === 'beginner' ? '入门' : item.level === 'intermediate' ? '进阶' : '高级'}}
+              </text>
+              <text class="duration">⏱️ {{item.duration}}分钟</text>
+            </view>
+          </view>
+          <text class="arrow">></text>
+        </view>
+      </view>
+      
+      <view class="ai-generate-section">
+        <text class="ai-title">🤖 AI智能教程</text>
+        <text class="ai-desc">让AI为您生成个性化学习教程</text>
+        <button class="ai-btn" bindtap="onGenerateTutorial" loading="{{generatingTutorial}}">
+          {{generatingTutorial ? '生成中...' : '生成教程'}}
+        </button>
+      </view>
+    </view>
+
+    <!-- 历史渊源 -->
+    <view class="tab-content" wx:if="{{activeTab === 'history'}}">
+      <view class="section">
+        <text class="section-title">📜 历史渊源</text>
+        <text class="section-text">{{heritage.history}}</text>
+      </view>
+      <view class="section">
+        <text class="section-title">📍 传承地点</text>
+        <view class="location-card" bindtap="onViewMap">
+          <text class="location-name">{{heritage.location.address}}</text>
+          <text class="location-action">点击查看地图 ></text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="loading-container" wx:if="{{loading}}">
+  <view class="loading-spinner"></view>
+  <text>加载中...</text>
+</view>

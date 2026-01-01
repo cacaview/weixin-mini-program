@@ -1,0 +1,64 @@
+<!--非遗文化展示页面-->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input class="search-input" 
+             placeholder="搜索非遗项目..." 
+             value="{{keyword}}"
+             bindinput="onSearchInput"
+             bindconfirm="onSearchConfirm"/>
+    </view>
+    <view class="nearby-btn" bindtap="onNearbyTap">
+      <text>📍 附近</text>
+    </view>
+  </view>
+
+  <!-- 分类标签 -->
+  <scroll-view class="category-scroll" scroll-x="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}">
+    <view class="category-list">
+      <view class="category-item {{selectedCategory === item ? 'active' : ''}}" 
+            wx:for="{{categories}}" 
+            wx:key="*this"
+            data-category="{{item}}"
+            bindtap="onCategoryTap">
+        {{item}}
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 非遗列表 -->
+  <view class="heritage-list">
+    <view class="heritage-card" 
+          wx:for="{{heritageList}}" 
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="onHeritageTap">
+      <image class="heritage-cover" src="{{item.cover}}" mode="aspectFill"/>
+      <view class="heritage-info">
+        <text class="heritage-name">{{item.name}}</text>
+        <text class="heritage-category">{{item.category}}</text>
+        <text class="heritage-desc">{{item.description}}</text>
+        <view class="heritage-location">
+          <text>📍 {{item.location.province}} {{item.location.city}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="load-more" wx:if="{{heritageList.length > 0}}">
+    <view wx:if="{{loading}}" class="loading">
+      <view class="loading-spinner"></view>
+      <text>加载中...</text>
+    </view>
+    <text wx:elif="{{!hasMore}}" class="no-more">没有更多了</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && heritageList.length === 0}}">
+    <text class="empty-icon">🏺</text>
+    <text class="empty-text">暂无非遗项目</text>
+  </view>
+</view>

@@ -1,0 +1,278 @@
+/* 非遗详情页面样式 */
+
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.cover-section {
+  height: 400rpx;
+}
+
+.cover-swiper {
+  height: 100%;
+}
+
+.cover-image {
+  width: 100%;
+  height: 100%;
+}
+
+.info-card {
+  background-color: #fff;
+  padding: 30rpx;
+  margin-top: -40rpx;
+  margin-left: 30rpx;
+  margin-right: 30rpx;
+  border-radius: 16rpx;
+  position: relative;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.heritage-name {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.heritage-meta {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.category-tag {
+  font-size: 24rpx;
+  color: #8B4513;
+  background-color: #FFF8DC;
+  padding: 6rpx 20rpx;
+  border-radius: 20rpx;
+}
+
+.location {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.tabs {
+  display: flex;
+  background-color: #fff;
+  margin-top: 20rpx;
+  padding: 0 30rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx 0;
+  font-size: 28rpx;
+  color: #666;
+  position: relative;
+}
+
+.tab-item.active {
+  color: #8B4513;
+  font-weight: bold;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60rpx;
+  height: 4rpx;
+  background-color: #8B4513;
+  border-radius: 2rpx;
+}
+
+.content-section {
+  padding: 24rpx 30rpx;
+}
+
+.tab-content {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+}
+
+.section {
+  margin-bottom: 30rpx;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.section-text {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.8;
+}
+
+.technique-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.technique-tag {
+  font-size: 26rpx;
+  color: #8B4513;
+  background-color: #FFF8DC;
+  padding: 12rpx 24rpx;
+  border-radius: 30rpx;
+}
+
+.tutorial-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  margin-bottom: 30rpx;
+}
+
+.tutorial-card {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  background-color: #FAFAFA;
+  border-radius: 12rpx;
+}
+
+.tutorial-icon {
+  font-size: 40rpx;
+  margin-right: 20rpx;
+}
+
+.tutorial-info {
+  flex: 1;
+}
+
+.tutorial-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.tutorial-meta {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.level-tag {
+  font-size: 22rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+}
+
+.level-tag.beginner {
+  background-color: #E8F5E9;
+  color: #4CAF50;
+}
+
+.level-tag.intermediate {
+  background-color: #FFF3E0;
+  color: #FF9800;
+}
+
+.level-tag.advanced {
+  background-color: #FFEBEE;
+  color: #F44336;
+}
+
+.duration {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.arrow {
+  font-size: 28rpx;
+  color: #ccc;
+}
+
+.ai-generate-section {
+  background: linear-gradient(135deg, #FFF8DC 0%, #FFEFD5 100%);
+  border-radius: 16rpx;
+  padding: 30rpx;
+  text-align: center;
+}
+
+.ai-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #8B4513;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.ai-desc {
+  font-size: 26rpx;
+  color: #A0522D;
+  display: block;
+  margin-bottom: 24rpx;
+}
+
+.ai-btn {
+  background-color: #8B4513;
+  color: #fff;
+  font-size: 28rpx;
+  padding: 20rpx 60rpx;
+  border-radius: 40rpx;
+}
+
+.location-card {
+  background-color: #FAFAFA;
+  border-radius: 12rpx;
+  padding: 24rpx;
+}
+
+.location-name {
+  font-size: 28rpx;
+  color: #333;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.location-action {
+  font-size: 26rpx;
+  color: #8B4513;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #999;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid #f3f3f3;
+  border-top: 4rpx solid #8B4513;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
