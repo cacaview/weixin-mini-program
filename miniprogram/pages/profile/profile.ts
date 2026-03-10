@@ -16,8 +16,8 @@ Page({
       { icon: '📜', title: '我的剧本', desc: '创作和收藏的剧本', url: '' },
       { icon: '🎮', title: '游戏记录', desc: '历史游戏和成就', url: '' },
       { icon: '🏺', title: '非遗学习', desc: '学习进度和作品', url: '' },
-      { icon: '📊', title: '学习报告', desc: '查看学习效果分析', url: '' },
-      { icon: '⚙️', title: '设置', desc: 'LLM配置和偏好', url: '' },
+      { icon: '📊', title: '学习报告', desc: '查看学习效果分析', url: '/pages/feedback/feedback?type=report' },
+      { icon: '⚙️', title: '设置', desc: 'LLM配置和偏好', url: '/pages/settings/settings' },
       { icon: '❓', title: '帮助反馈', desc: '使用帮助和意见反馈', url: '/pages/feedback/feedback' }
     ],
     badges: [
@@ -30,15 +30,30 @@ Page({
 
   onLoad() {
     this.checkLogin();
+    this.loadStats();
   },
 
-  onShow() {},
+  onShow() {
+    this.loadStats();
+  },
 
   checkLogin() {
     const userInfo = wx.getStorageSync('userInfo');
     if (userInfo) {
       this.setData({ userInfo, isLoggedIn: true });
     }
+  },
+
+  loadStats() {
+    // 从本地存储加载统计数据
+    const myScripts = wx.getStorageSync('myScripts') || [];
+    const learningData = wx.getStorageSync('learningData') || {};
+    
+    this.setData({
+      'stats.createdScripts': myScripts.length,
+      'stats.playedScripts': learningData.playedScripts || this.data.stats.playedScripts,
+      'stats.heritageProgress': (learningData.heritageProgress && learningData.heritageProgress.length) || this.data.stats.heritageProgress
+    });
   },
 
   onLogin() {
@@ -57,11 +72,11 @@ Page({
   },
 
   onMenuTap(e: any) {
-    const { url } = e.currentTarget.dataset;
+    const { url, title } = e.currentTarget.dataset;
     if (url) {
       wx.navigateTo({ url });
     } else {
-      wx.showToast({ title: '功能开发中', icon: 'none' });
+      wx.showToast({ title: `${title}功能开发中`, icon: 'none' });
     }
   },
 

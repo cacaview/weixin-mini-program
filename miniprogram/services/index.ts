@@ -6,7 +6,16 @@ export { llmService } from './llm/llm-service';
 export { imageService } from './image/image-service';
 export { apiService } from './api/api-service';
 
-// 导出类型
+// 导出LLM相关类型
+export type {
+  LLMConfig,
+  Message,
+  LLMResponse,
+  ScriptGenerateParams,
+  NPCChatParams
+} from './llm/llm-service';
+
+// 导出API相关类型
 export type {
   Script,
   ScriptRole,

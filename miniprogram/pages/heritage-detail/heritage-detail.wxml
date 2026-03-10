@@ -42,12 +42,13 @@
           <text class="technique-tag" wx:for="{{heritage.techniques}}" wx:key="*this">{{item}}</text>
         </view>
       </view>
+      <button class="start-learn-btn" bindtap="onStartLearning">开始学习</button>
     </view>
 
     <!-- 学习教程 -->
     <view class="tab-content" wx:if="{{activeTab === 'tutorial'}}">
       <view class="tutorial-list">
-        <view class="tutorial-card" wx:for="{{tutorials}}" wx:key="id" data-id="{{item.id}}" bindtap="onTutorialTap">
+        <view class="tutorial-card" wx:for="{{tutorials}}" wx:key="id" data-id="{{item.id}}" data-level="{{item.level}}" bindtap="onTutorialTap">
           <view class="tutorial-icon">📚</view>
           <view class="tutorial-info">
             <text class="tutorial-title">{{item.title}}</text>
@@ -65,7 +66,13 @@
       <view class="ai-generate-section">
         <text class="ai-title">🤖 AI智能教程</text>
         <text class="ai-desc">让AI为您生成个性化学习教程</text>
-        <button class="ai-btn" bindtap="onGenerateTutorial" loading="{{generatingTutorial}}">
+        <picker mode="selector" range="{{['入门', '进阶', '高级']}}" value="{{selectedLevel === 'beginner' ? 0 : selectedLevel === 'intermediate' ? 1 : 2}}" bindchange="onLevelChange">
+          <view class="level-picker">
+            <text>难度：{{selectedLevel === 'beginner' ? '入门' : selectedLevel === 'intermediate' ? '进阶' : '高级'}}</text>
+            <text class="arrow">▼</text>
+          </view>
+        </picker>
+        <button class="ai-btn" bindtap="onGenerateTutorial" loading="{{generatingTutorial}}" disabled="{{generatingTutorial}}">
           {{generatingTutorial ? '生成中...' : '生成教程'}}
         </button>
       </view>
@@ -91,4 +98,23 @@
 <view class="loading-container" wx:if="{{loading}}">
   <view class="loading-spinner"></view>
   <text>加载中...</text>
+</view>
+
+<!-- 教程弹窗 -->
+<view class="tutorial-modal" wx:if="{{showTutorialModal}}">
+  <view class="modal-mask" bindtap="onCloseTutorialModal"></view>
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">📚 AI生成教程</text>
+      <view class="modal-close" bindtap="onCloseTutorialModal">✕</view>
+    </view>
+    <scroll-view class="modal-body" scroll-y>
+      <view class="tutorial-content">
+        <text>{{generatedTutorial}}</text>
+      </view>
+    </scroll-view>
+    <view class="modal-footer">
+      <button class="modal-btn" bindtap="onCloseTutorialModal">关闭</button>
+    </view>
+  </view>
 </view>

@@ -1,0 +1,4 @@
+project.private.config.json
+.cloudbase/
+server/flask_service/counter.json
+miniprogram/pages/settings/

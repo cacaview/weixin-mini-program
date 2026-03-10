@@ -1,6 +1,8 @@
 /**
- * 非遗详情页面
+ * 非遗详情页面 - 集成LLM服务
  */
+
+import { llmService } from '../../services/llm/llm-service';
 
 Page({
   data: {
@@ -16,34 +18,132 @@ Page({
       location: { province: '广东', city: '佛山', address: '佛山市禅城区剪纸艺术馆', latitude: 23.0218, longitude: 113.1219 }
     },
     tutorials: [
-      { id: 't1', title: '剪纸入门：五角星', level: 'beginner', duration: 30 },
-      { id: 't2', title: '剪纸进阶：窗花', level: 'intermediate', duration: 60 }
+      { id: 't1', title: '剪纸入门：五角星', level: 'beginner', duration: 30, content: '' },
+      { id: 't2', title: '剪纸进阶：窗花', level: 'intermediate', duration: 60, content: '' }
     ],
     loading: false,
     activeTab: 'intro',
-    generatingTutorial: false
+    generatingTutorial: false,
+    selectedLevel: 'beginner',
+    generatedTutorial: '',
+    showTutorialModal: false
   },
 
-  onLoad(options: any) {},
+  onLoad(options: any) {
+    if (options.id) {
+      this.loadHeritageDetail(options.id);
+    }
+  },
+
+  loadHeritageDetail(id: string) {
+    // 这里可以从服务器加载详情，目前使用本地数据
+    console.log('Loading heritage:', id);
+  },
 
   onTabChange(e: any) {
     this.setData({ activeTab: e.currentTarget.dataset.tab });
   },
 
   onTutorialTap(e: any) {
-    wx.showToast({ title: '教程功能开发中', icon: 'none' });
+    const { id, level } = e.currentTarget.dataset;
+    const tutorial = this.data.tutorials.find(t => t.id === id);
+    
+    if (tutorial && tutorial.content) {
+      this.setData({
+        generatedTutorial: tutorial.content,
+        showTutorialModal: true
+      });
+    } else {
+      this.setData({ selectedLevel: level });
+      this.generateTutorial(level);
+    }
   },
 
-  onGenerateTutorial() {
+  onLevelChange(e: any) {
+    this.setData({ selectedLevel: e.detail.value });
+  },
+
+  async onGenerateTutorial() {
+    await this.generateTutorial(this.data.selectedLevel);
+  },
+
+  async generateTutorial(level: string) {
     this.setData({ generatingTutorial: true });
-    setTimeout(() => {
-      this.setData({ generatingTutorial: false });
-      wx.showModal({
-        title: 'AI生成的教程',
-        content: '剪纸入门教程：\n1. 准备红纸和剪刀\n2. 将纸对折\n3. 画出图案轮廓\n4. 沿线剪切\n5. 展开完成',
-        showCancel: false
+    
+    const { heritage } = this.data;
+    
+    try {
+      const response = await llmService.generateHeritageTutorial(
+        heritage.name,
+        level as 'beginner' | 'intermediate' | 'advanced'
+      );
+
+      if (response.success) {
+        this.setData({
+          generatingTutorial: false,
+          generatedTutorial: response.content,
+          showTutorialModal: true
+        });
+
+        // 缓存教程内容
+        const tutorials = [...this.data.tutorials];
+        const tutorialIndex = tutorials.findIndex(t => t.level === level);
+        if (tutorialIndex >= 0) {
+          tutorials[tutorialIndex].content = response.content;
+          this.setData({ tutorials });
+        }
+      } else {
+        this.setData({
+          generatingTutorial: false,
+          generatedTutorial: this.getLocalTutorial(level),
+          showTutorialModal: true
+        });
+        wx.showToast({ title: 'AI生成失败，显示模板', icon: 'none' });
+      }
+    } catch (error) {
+      console.error('Generate tutorial error:', error);
+      this.setData({
+        generatingTutorial: false,
+        generatedTutorial: this.getLocalTutorial(level),
+        showTutorialModal: true
       });
-    }, 2000);
+    }
+  },
+
+  getLocalTutorial(level: string): string {
+    const { heritage } = this.data;
+    const levelText = level === 'beginner' ? '入门' : level === 'intermediate' ? '进阶' : '高级';
+    
+    return `# ${heritage.name}${levelText}教程
+
+## 简介
+${heritage.description}
+
+## 所需材料
+- 彩色纸张
+- 剪刀
+- 铅笔
+- 橡皮
+
+## 基础步骤
+1. 准备一张正方形的红纸
+2. 将纸对折成三角形
+3. 再对折一次
+4. 用铅笔画出想要的图案
+5. 沿着线条小心剪切
+6. 展开纸张，完成作品
+
+## 注意事项
+- 使用剪刀时注意安全
+- 初学者建议从简单图案开始
+- 保持耐心，多加练习
+
+## 与红色文化的关联
+在革命年代，剪纸艺人曾用特殊的图案传递情报，为革命事业做出了独特贡献。`;
+  },
+
+  onCloseTutorialModal() {
+    this.setData({ showTutorialModal: false });
   },
 
   onViewMap() {
@@ -60,6 +160,11 @@ Page({
     const { url } = e.currentTarget.dataset;
     const urls = [this.data.heritage.cover, ...this.data.heritage.images];
     wx.previewImage({ urls, current: url });
+  },
+
+  onStartLearning() {
+    this.setData({ activeTab: 'tutorial' });
+    wx.showToast({ title: '选择一个教程开始学习', icon: 'none' });
   },
 
   onShareAppMessage() {

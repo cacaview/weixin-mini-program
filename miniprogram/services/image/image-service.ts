@@ -180,7 +180,8 @@ class ImageService {
         success: (res) => {
           const base64 = res.data as string;
           // 获取图片类型
-          const type = filePath.split('.').pop()?.toLowerCase() || 'png';
+          const parts = filePath.split('.');
+          const type = parts.length ? parts.pop()!.toLowerCase() : 'png';
           const mimeType = type === 'jpg' ? 'jpeg' : type;
           resolve(`data:image/${mimeType};base64,${base64}`);
         },

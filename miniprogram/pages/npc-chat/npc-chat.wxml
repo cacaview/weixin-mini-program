@@ -10,8 +10,8 @@
       </view>
     </view>
     <view class="header-actions">
-      <view class="action-btn" bindtap="onViewClues">
-        <text>📋 线索本</text>
+      <view class="action-btn" bindtap="onBackToGame">
+        <text>返回</text>
       </view>
     </view>
   </view>
@@ -49,13 +49,7 @@
         <!-- 用户消息 -->
         <view class="user-message" wx:elif="{{item.role === 'user'}}">
           <view class="message-bubble user-bubble">
-            <image class="message-image" 
-                   wx:if="{{item.imageUrl}}" 
-                   src="{{item.imageUrl}}" 
-                   mode="aspectFill"
-                   data-url="{{item.imageUrl}}"
-                   bindtap="onPreviewImage"/>
-            <text class="message-text" wx:if="{{item.content}}">{{item.content}}</text>
+            <text class="message-text">{{item.content}}</text>
           </view>
         </view>
       </view>
@@ -66,19 +60,11 @@
       <text class="quick-title">你可以问：</text>
       <view class="quick-list">
         <view class="quick-item" 
-              data-question="您好，请问您是做什么的？" 
+              wx:for="{{quickQuestions}}"
+              wx:key="*this"
+              data-question="{{item}}" 
               bindtap="onQuickQuestion">
-          您好，请问您是做什么的？
-        </view>
-        <view class="quick-item" 
-              data-question="这些剪纸真漂亮，有什么特殊含义吗？" 
-              bindtap="onQuickQuestion">
-          这些剪纸真漂亮，有什么特殊含义吗？
-        </view>
-        <view class="quick-item" 
-              data-question="我听说您以前帮助过地下党？" 
-              bindtap="onQuickQuestion">
-          我听说您以前帮助过地下党？
+          {{item}}
         </view>
       </view>
     </view>
@@ -88,19 +74,8 @@
   </scroll-view>
 
   <!-- 输入区域 -->
-  <view class="input-area" style="padding-bottom: {{keyboardHeight}}px;">
-    <!-- 已选图片预览 -->
-    <view class="selected-image-wrap" wx:if="{{selectedImage}}">
-      <image class="selected-image" src="{{selectedImage}}" mode="aspectFill"/>
-      <view class="remove-image" bindtap="onRemoveImage">✕</view>
-    </view>
-    
+  <view class="input-area">
     <view class="input-row">
-      <!-- 图片按钮 -->
-      <view class="input-btn image-btn {{!supportImage ? 'disabled' : ''}}" bindtap="onChooseImage">
-        <text>🖼️</text>
-      </view>
-      
       <!-- 文字输入 -->
       <input class="text-input" 
              placeholder="输入你想说的话..." 
@@ -108,36 +83,12 @@
              bindinput="onInputChange"
              bindconfirm="onSendMessage"
              confirm-type="send"
-             adjust-position="{{false}}"/>
+             disabled="{{sending}}"/>
       
       <!-- 发送按钮 -->
       <view class="input-btn send-btn {{sending ? 'disabled' : ''}}" bindtap="onSendMessage">
-        <text>发送</text>
-      </view>
-    </view>
-  </view>
-
-  <!-- 线索获得弹窗 -->
-  <view class="clue-modal" wx:if="{{showClueModal}}">
-    <view class="clue-modal-mask" bindtap="onCloseClueModal"></view>
-    <view class="clue-modal-content">
-      <view class="clue-modal-header">
-        <text class="clue-modal-title">🎉 获得新线索！</text>
-      </view>
-      <view class="clue-list">
-        <view class="clue-item" wx:for="{{newClues}}" wx:key="id">
-          <image class="clue-image" 
-                 wx:if="{{item.imageUrl}}" 
-                 src="{{item.imageUrl}}" 
-                 mode="aspectFill"/>
-          <view class="clue-info">
-            <text class="clue-name">{{item.name}}</text>
-            <text class="clue-desc">{{item.description}}</text>
-          </view>
-        </view>
-      </view>
-      <view class="clue-modal-footer">
-        <button class="clue-confirm-btn" bindtap="onCloseClueModal">知道了</button>
+        <text wx:if="{{!sending}}">发送</text>
+        <text wx:else>...</text>
       </view>
     </view>
   </view>

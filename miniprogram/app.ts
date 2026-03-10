@@ -3,53 +3,51 @@
  * 融合非遗文化与红色主题的剧本杀游戏平台
  */
 
+import { llmService } from './services/llm/llm-service';
+
 App({
   globalData: {
     userInfo: null as WechatMiniprogram.UserInfo | null,
     isLoggedIn: false,
     llmConfig: {
       apiKey: '',
-      baseUrl: '',
-      model: 'gpt-3.5-turbo',
+      baseUrl: 'http://172.20.1.114:8080',
+      model: 'default',
       multimodal: false
     }
   },
 
   onLaunch() {
-    // 初始化
     this.initApp();
   },
 
   initApp() {
-    // 初始化LLM配置
     this.initLLMConfig();
-    
-    // 检查更新
     this.checkUpdate();
   },
 
-  /**
-   * 初始化LLM配置
-   */
   initLLMConfig() {
-    // 从本地存储读取LLM配置
     const savedConfig = wx.getStorageSync('llmConfig');
     if (savedConfig) {
       this.globalData.llmConfig = { ...this.globalData.llmConfig, ...savedConfig };
     }
+    
+    // 初始化LLM服务
+    llmService.init({
+      apiKey: this.globalData.llmConfig.apiKey,
+      baseUrl: this.globalData.llmConfig.baseUrl,
+      model: this.globalData.llmConfig.model
+    }, this.globalData.llmConfig.multimodal);
   },
 
-  /**
-   * 更新LLM配置
-   */
   updateLLMConfig(config: any) {
     this.globalData.llmConfig = { ...this.globalData.llmConfig, ...config };
     wx.setStorageSync('llmConfig', this.globalData.llmConfig);
+    
+    // 更新LLM服务配置
+    llmService.updateConfig(config);
   },
 
-  /**
-   * 检查小程序更新
-   */
   checkUpdate() {
     if (wx.canIUse('getUpdateManager')) {
       const updateManager = wx.getUpdateManager();
@@ -78,16 +76,10 @@ App({
     }
   },
 
-  /**
-   * 全局错误处理
-   */
   onError(error: string) {
     console.error('App Error:', error);
   },
 
-  /**
-   * 页面不存在处理
-   */
   onPageNotFound(res: any) {
     console.warn('Page not found:', res.path);
     wx.redirectTo({
