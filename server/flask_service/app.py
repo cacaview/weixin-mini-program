@@ -27,9 +27,8 @@ def save_counter():
         pass
 
 
-@app.before_first_request
-def init():
-    load_counter()
+# 在模块导入时加载计数文件，避免在某些运行环境（如用 gunicorn 导入时）使用生命周期装饰器导致问题
+load_counter()
 
 
 @app.route('/api/count', methods=['POST'])
