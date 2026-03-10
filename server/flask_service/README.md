@@ -39,13 +39,15 @@ docker build -t <registry>/my-flask-count:latest .
 docker push <registry>/my-flask-count:latest
 ```
 
-2. 在微信云控制台创建 CloudRun 服务：
+2. 在微信云控制台创建 CloudRun 服务（当 Dockerfile 在仓库根时）：
 - 代码仓库：`cacaview/weixin-mini-program`
 - 分支：`main`
-- 目标目录（Build Context）：`server/flask_service`
+- 目标目录（Build Context）：`.` （仓库根）
 - 端口：`8080`
-- Dockerfile：有，名称 `Dockerfile`
+- Dockerfile：有，名称 `Dockerfile`（位于仓库根）
 - 健康检查路径：`/health`
+
+如果你仍想把构建上下文设置为子目录，也可以，但此时需要将 Dockerfile 放在 `server/flask_service` 内（或使用控制台支持的相对 Dockerfile 路径）。目前仓库已将 `Dockerfile` 移到根目录以避免 CloudRun 构建器找不到路径的问题。
 
 3. 小程序调用示例：
 

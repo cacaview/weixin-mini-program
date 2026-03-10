@@ -159,3 +159,18 @@ MIT License
 ## 🤝 贡献
 
 欢迎提交 Issue 和 Pull Request！
+
+## ☁️ CloudRun 快速部署（镜像由 CloudRun 构建）
+
+在微信云控制台创建 CloudRun 服务时，请按下列精确值填写：
+
+- 代码仓库：`cacaview/weixin-mini-program`
+- 分支：`main`
+- 目标目录（Build Context）：`.`  （仓库根）
+- 端口：`8080`
+- Dockerfile：有
+- Dockerfile 名称：`Dockerfile`（位于仓库根）
+- 健康检查路径：`/health`
+- 服务名：请与小程序请求头 `X-WX-SERVICE` 保持一致（或修改小程序请求头以匹配服务名）
+
+说明：我们已将 `Dockerfile` 放在仓库根并在镜像构建时从 `server/flask_service` 复制应用代码（详见仓库内 `server/flask_service/README.md`）。如果构建仍提示“path not found”，请取消绑定并重新绑定 GitHub 仓库以刷新索引，或直接将目标目录设置为 `server/flask_service` 并将 `Dockerfile` 移回子目录后再试。
